@@ -1,0 +1,58 @@
+    <html>
+    <head>
+    <title>Pomodoro</title>
+    </head>
+    <body>
+    <h1>Pomodoro</h1>
+
+    <ul id="current-task"></ul>
+    <p>Current task:</p>
+    <input type="text" id="new-task-input">
+    <button id="add-task-button">Add</button>
+
+    <script>
+        //retrieve the latest task and print it
+        chrome.storage.local.get(['currentTask'], function(result) {
+        var currentTask = result.currentTask;
+        var item = document.createElement('li');
+        });
+        
+    </script>
+
+    <ul id="blocked-websites-list"></ul>
+    <p>Add a website to the list of blocked websites:</p>
+    <input type="text" id="new-website-input">
+    <button id="add-website-button">Add</button>
+
+    <script>
+        // Retrieve the list of blocked websites
+        chrome.storage.local.get(['blockedWebsites'], function(result) {
+        var blockedWebsites = result.blockedWebsites;
+        
+        // Generate the list of blocked websites
+        var blockedWebsitesList = document.getElementById('blocked-websites-list');
+        for (var i = 0; i < blockedWebsites.length; i++) {
+            var website = blockedWebsites[i];
+            var item = document.createElement('li');
+            item.textContent = website;
+            blockedWebsitesList.appendChild(item);
+        }
+        
+        // Add a website to the list of blocked websites
+        var addWebsiteButton = document.getElementById('add-website-button');
+        addWebsiteButton.addEventListener('click', function() {
+            var newWebsiteInput = document.getElementById('new-website-input');
+            var newWebsite = newWebsiteInput.value;
+            blockedWebsites.push(newWebsite);
+            
+            // Store the updated list of blocked websites
+            chrome.storage.local.set({blockedWebsites: blockedWebsites}, function() {
+            // Refresh the page
+            location.reload();
+            });
+        });
+        });
+    </script>
+</body>
+
+</html>
