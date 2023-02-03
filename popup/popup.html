@@ -1,13 +1,46 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Popup</title>
-  </head>
-  <body>
-    <h2>Current Work Session:</h2>
-    
-    <button id="open">Open</button>
-    <button id="close">Close</button>
-    <script src="popup.js"></script>
-  </body>
+
+<head>
+  <scripts src="timer.js"></scripts>
+  <meta charset="utf-8">
+  <title>Popup</title>
+</head>
+
+<body>
+  <h3>Current Work Session: </h3>
+
+  <!--Pull current task from chrome.storage.sync and display-->
+  <p><span id="current-task"></span></p>
+  <script>
+    chrome.storage.sync.get(['currentTask'], function (result) {
+      var currentTask = document.getElementById('current-task');
+      currentTask.textContent = result.currentTask;
+    });
+  </script>
+  
+  <!--Pull current alarm time from chrome.storage.sync and display, count down-->
+  <span id="timer-display"></span>
+  <script>
+    chrome.storage.sync.get(['timer'], function (result) {
+      var time = result.currentTimer;
+      
+      var timerDisplay = document.getElementById('timer-display');
+      var timeLeft = time * 60;
+      timerDisplay.textContent = formatTime(timeLeft);
+
+      //start the timer
+      timerIntervalId = setInterval(function () {
+        timeLeft--;
+        timerDisplay.textContent = formatTime(timeLeft);
+
+        if (timeLeft === 0) {
+            clearInterval(timerIntervalId);
+            alert('Time is up!');
+        }
+    }, 1000);
+
+    });
+  </script>
+  
+</body>

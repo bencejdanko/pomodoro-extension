@@ -14,12 +14,13 @@
     "content_scripts": [
         {
             "js": ["scripts/content.js"],
-            "matches": ["<all_urls>"]
+            "matches": ["*://*/*"]
         }
     ],
 
     "background": {
         "service_worker": "scripts/background.js"
+        
     },
 
     "action": {
