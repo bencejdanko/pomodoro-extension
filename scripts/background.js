@@ -1,3 +1,12 @@
+chrome.storage.sync.set({
+  timer: 25,
+  currentTask: "Work on my project",
+  blockedWebsites: ["https://www.youtube.com/", "https://www.facebook.com/", "https://www.instagram.com/", "https://www.reddit.com/", "https://www.twitter.com/"]
+  ,timerActive: 'false',
+}, function() {
+  console.log("Default values for timer and goal have been set in sync storage.");
+});
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status == "complete") {
     if (tab.url == "chrome://newtab/") {
@@ -9,14 +18,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 let timerTime;
 let timerID;
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  
   if (request.message === 'START_TIMER') {
     console.log('START_TIMER message received in background.js');
-    timerActive = chrome.storage.sync.get(['timerActive']).value;
-    timerTime = request.time;
-    console.log('Timer start time will be: ' + timerTime + 'ms');
-    if (timerActive === 'false') startTimer();
-    else console.log('Timer already active!');
+    timerTime = request.timer * 60000; // Convert minutes to milliseconds
+    startTimer();
   }
 
   if (request.message === 'GET_TIMER') {
@@ -34,8 +39,6 @@ function startTimer() {
       clearInterval(timerID);
       chrome.storage.sync.set({ 'timerActive': 'false' });
       console.log('Timer stopped');
-    }
-    console.log('Timer active: ' + chrome.storage.sync.get(['timerActive']) 
-    +' Timer: ' + timerTime + 'ms');
+    } 
   }, 1000);
 }
