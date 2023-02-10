@@ -1,39 +1,76 @@
 <html>
 
+
+
 <head>
     <title>Pomodoro</title>
+    <style>
+
+        body {
+            font-family : Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+            background-color: #3a3a3d;
+            text-align: center;
+            font-family: sans-serif;
+        }
+        
+        h1 {
+            font-family : Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+            color: #fff;
+            text-align: center;
+        }
+        
+        #current-task {
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        #current-timer {
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        #blocked-websites-list {
+            color: #fff;
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        #blocked-websites-list li {
+            margin: 5px 0;
+        }
+        
+        #blocked-websites-list li button {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Pomodoro</h1>
 
-    <p>Current timer:
-
+    <p>
         <select id="new-timer-input">
             <option value="15">15</option>
             <option value="20">20</option>
             <option value="25">25</option>
         </select>
 
-        <button id="start-timer-button">start</button>
-        <script src="scripts/start-timer-button-listener.js"></script>
-    </p>
-
-    <span id="current-timer"></span>
-
-    <p>Current task:
         <input type="text" id="new-task-input">
-        <button id="save-task-button">save</button>
+        <button id="start-timer-button">start</button>
+        <script src="scripts/start-button-listener.js"></script>
     </p>
 
+    <p>
     <span id="current-task"></span>
     <script src="scripts/display-task.js"></script>
 
-    <p>Add a website to the list of blocked websites:</p>
-    <input type="text" id="new-website-input">
-    <button id="add-website-button">save</button>
-    <ul id="blocked-websites-list"></ul>
+    <span id="current-timer"></span>
+    <script src="scripts/display-current-timer.js"></script>
+    </p>
+
+    <textarea id="blocked-websites" rows="10" cols="30"></textarea>
     <script src="scripts/display-blocked-websites.js"></script>
+
 </body>
 
 </html>
