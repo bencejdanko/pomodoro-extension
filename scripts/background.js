@@ -9,11 +9,13 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
+
+
    chrome.storage.sync.get(['timerActive']).then((result) => {
 
     if (tab.url == "chrome://newtab/") { 
       chrome.tabs.update(tabId, {url: "homepage.html"});
-   } else if (result.timerActive == 'true') {
+    } else if (result.timerActive == 'true') {
       console.log("Timer is active! Checking if blocked website is visited...")
         chrome.storage.sync.get(['blockedWebsites'], function(result) {
           if (result.blockedWebsites.includes(tab.url)) {
@@ -23,6 +25,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         });
       } else if (result.timerActive == 'false') {
         console.log("Timer is not active - no action taken for blocking websites");
+      } else {
+        console.log("Error: Timer status not set, setting timer status to false");
+        chrome.storage.sync.set({timerActive: 'false'});
+
       }
     });
   });
@@ -34,6 +40,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     console.log('START_TIMER message received in background.js');
     timerTime = request.timer * 60000; // Convert minutes to milliseconds
     startTimer();
+    
   }
 
   if (request.message === 'GET_TIMER') {
